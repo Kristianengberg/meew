@@ -1,0 +1,32 @@
+{
+  "name": "meew_intern",
+  "version": "0.0.1",
+  "description": "wheel of fortune project for interns",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kristianengberg/meew.git"
+  },
+  "keywords": [
+    "nodeJS",
+    "javascript"
+  ],
+  "author": "Kristian Engberg Nielsen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kristianengberg/meew/issues"
+  },
+  "homepage": "https://github.com/Kristianengberg/meew#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.6",
+    "node-fetch": "^2.6.1",
+    "socket.io": "^4.1.1"
+  }
+}
