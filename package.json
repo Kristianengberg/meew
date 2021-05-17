@@ -3,7 +3,6 @@
     "version": "0.0.1",
     "description": "wheel of fortune project for interns",
     "main": "app.js",
-    "type": "module",
     "directories": {
         "doc": "docs"
     },
@@ -25,8 +24,11 @@
     },
     "homepage": "https://github.com/Kristianengberg/meew#readme",
     "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^9.0.2",
         "express": "^4.17.1",
         "mongodb": "^3.6.6",
+        "mongoose": "^5.12.9",
         "node-fetch": "^2.6.1",
         "socket.io": "^4.1.1"
     }
