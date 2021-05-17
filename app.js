@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 });
 
 
-mongoose.connect("mongodb+srv://admin:iliketrains1234@meew.gzuvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useUnifiedTopology: true }, { useNewUrlParser: true }, (error) => {
+mongoose.connect(process.env.DATABASE_URL, { useUnifiedTopology: true }, { useNewUrlParser: true }, (error) => {
     if (error) {
         console.log(error);
     }
