@@ -10,7 +10,7 @@ router.get("/users", async(req, res) => {
         res.json({ message: err });
     }
 });
-
+/*
 router.post("/users", async(req, res) => {
     console.log(req.body);
     const user = new User({
@@ -25,6 +25,7 @@ router.post("/users", async(req, res) => {
         res.json({ message: err });
     }
 });
+*/
 
 router.get("/users/:id", async(req, res) => {
     try {
