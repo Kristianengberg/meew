@@ -1,11 +1,27 @@
-import express from "express";
+const express = require("express");
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
+const userRoute = require("./routes/userRoute");
+const mongoose = require("mongoose");
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(userRoute);
 
 app.get("/", (req, res) => {
-    res.send({});
+
 });
 
+
+mongoose.connect("mongodb+srv://admin:iliketrains1234@meew.gzuvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useUnifiedTopology: true }, { useNewUrlParser: true }, (error) => {
+    if (error) {
+        console.log(error);
+    }
+    console.log("connected to DB");
+});
 
 app.listen(8080, (error) => {
     if (error) {
