@@ -18,7 +18,9 @@ router.post("/register", async(req, res) => {
             lastName: req.body.lastName,
             hashedPassword: hashedPassword,
         });
-        res.json(insertResult);
+        req.session.email = req.body.email;
+        res.redirect("/index");
+
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server error Occured");

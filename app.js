@@ -6,18 +6,42 @@ const userRoute = require("./routes/userRoute");
 const registerRoute = require("./routes/registerRoute");
 const loginRoute = require("./routes/loginRoute");
 const mongoose = require("mongoose");
+const session = require("express-session");
 
+
+
+app.use(express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 app.use(userRoute);
 app.use(registerRoute);
 app.use(loginRoute);
 
-app.get("/", (req, res) => {
 
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/public/login/login.html");
 });
+
+app.get("/index", (req, res) => {
+    res.sendFile(__dirname + "/public/index/index.html");
+})
+
+app.get("/register", (req, res) => {
+    res.sendFile(__dirname + "/public/register/register.html");
+})
 
 
 mongoose.connect(process.env.DATABASE_URL, { useUnifiedTopology: true }, { useNewUrlParser: true }, (error) => {

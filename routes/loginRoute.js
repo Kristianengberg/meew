@@ -7,7 +7,6 @@ const saltRounds = 12;
 
 /* signup, login, logout */
 
-
 router.post("/login", async(req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -15,8 +14,16 @@ router.post("/login", async(req, res) => {
         if (user) {
             const cmp = await bcrypt.compare(req.body.password, user.hashedPassword);
             if (cmp) {
-                //   ..... further code to maintain authentication like jwt or sessions
-                res.send("Auth Successful");
+
+                req.session.userID = user.id;
+                req.session.save(function(err) {
+                    console.log("session user id ", req.session.userID);
+                    if (!err) {
+
+                        res.redirect("/index");
+                    }
+                });
+
             } else {
                 res.send("Wrong username or password.");
             }
