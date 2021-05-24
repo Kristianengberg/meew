@@ -18,8 +18,14 @@ router.post("/register", async(req, res) => {
             lastName: req.body.lastName,
             hashedPassword: hashedPassword,
         });
-        req.session.email = req.body.email;
-        res.redirect("/index");
+        req.session.save(function(err) {
+            console.log("session user id ", req.session.userID);
+            if (!err) {
+
+                res.redirect("/index");
+            }
+        });
+
 
     } catch (error) {
         console.log(error);

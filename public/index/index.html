@@ -3,21 +3,34 @@
 <head>
     <title>Code Wheel</title>
     <script src='Winwheel.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js" integrity="sha512-cdV6j5t5o24hkSciVrb8Ki6FveC2SgwGfLE31+ZQRHAeSRxYhAQskLkq3dLm8ZcWe1N3vBOEYmmbhzf7NTtFFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src='index.js'></script>
 </head>
 
 <body>
-    <canvas id='canvas' width='880' height='880'>
+    <div id="navBar"></div>
+
+
+    <div style="text-align:center;">
+        <canvas id='canvas' width='440' height='440'>
             Canvas not supported, use another browser.
+         
         </canvas>
+        <a href="#" text="Spin the wheel" onClick="calculatePrizeOnServer();"></a>
+        <button onClick="calculatePrizeOnServer();">Spin the Wheel</button>
+        <button onClick="resetWheel();">Reset Wheel</button>
+    </div>
+
+
+
     <script>
         let theWheel = new Winwheel({
-            'numSegments': 8, // Number of segments
-            'outerRadius': 212, // The size of the wheel.
-            'centerX': 217, // Used to position on the background correctly.
-            'centerY': 219,
-            'textFontSize': 28, // Font size.
-            'segments': // Definition of all the segments.
-                [{
+            'numSegments': 8,
+            'outerRadius': 170,
+            'segments': [{
                 'fillStyle': '#eae56f',
                 'text': 'Prize 1'
             }, {
@@ -42,21 +55,86 @@
                 'fillStyle': '#e7706f',
                 'text': 'Prize 8'
             }],
-            'animation': // Definition of the animation
-            {
+            'animation': {
                 'type': 'spinToStop',
                 'duration': 5,
                 'spins': 8,
-                'callbackFinished': alertPrize
+                'callbackAfter': 'drawTriangle()'
             }
         });
+        let wheelSpinning = false;
 
-        // Called when the animation has finished.
-        function alertPrize(indicatedSegment) {
-            // Do basic alert of the segment text.
-            alert("You have won " + indicatedSegment.text);
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = ajaxStateChange;
+
+
+        function calculatePrizeOnServer() {
+            if (wheelSpinning == false) {
+
+                xhr.open('GET', "/calculatePrize", true);
+                xhr.send('');
+                wheelSpinning = true;
+            }
+        }
+
+
+        function ajaxStateChange() {
+            console.log(xhr.responseText);
+            if (xhr.readyState < 4) {
+                return;
+            }
+
+            if (xhr.status !== 200) {
+                return;
+            }
+
+
+            if (xhr.readyState === 4) {
+                let segmentNumber = xhr.responseText;
+
+                if (segmentNumber) {
+
+                    let stopAt = theWheel.getRandomForSegment(segmentNumber);
+
+
+                    theWheel.animation.stopAngle = stopAt;
+
+                    theWheel.startAnimation();
+                }
+            }
+        }
+
+        function resetWheel() {
+            theWheel.stopAnimation(false);
+            theWheel.rotationAngle = 0;
+            theWheel.draw();
+            drawTriangle();
+
+            wheelSpinning = false;
+        }
+
+
+        drawTriangle();
+
+        function drawTriangle() {
+
+            let ctx = theWheel.ctx;
+
+            ctx.strokeStyle = 'navy';
+            ctx.fillStyle = 'aqua';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(190, 5);
+            ctx.lineTo(250, 5);
+            ctx.lineTo(220, 50);
+            ctx.lineTo(191, 5);
+            ctx.stroke();
+            ctx.fill();
         }
     </script>
+
+
+
 </body>
 
 </html>

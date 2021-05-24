@@ -5,6 +5,7 @@ dotenv.config();
 const userRoute = require("./routes/userRoute");
 const registerRoute = require("./routes/registerRoute");
 const loginRoute = require("./routes/loginRoute");
+const wheelRoute = require("./routes/wheelRoute");
 const mongoose = require("mongoose");
 const session = require("express-session");
 
@@ -29,6 +30,8 @@ app.use(session({
 app.use(userRoute);
 app.use(registerRoute);
 app.use(loginRoute);
+app.use(wheelRoute);
+
 
 
 app.get("/", (req, res) => {
