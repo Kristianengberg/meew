@@ -32,7 +32,3 @@ function getUserData() {
 }
 
 getUserData();
-
-function updateUserHistory() {
-
-}

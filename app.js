@@ -9,12 +9,35 @@ const wheelRoute = require("./routes/wheelRoute");
 const mongoose = require("mongoose");
 const session = require("express-session");
 
-
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const escapeHtml = require("html-escaper").escape;
 
 app.use(express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+io.on("connection", (socket) => {
+    console.log("socket connected");
+    socket.on("userWin", (data) => {
+        console.log("received data ", data);
+        // changes the color for ALL the sockets in io
+        io.emit("userWonData", { segmentNumber: escapeHtml(data.segmentNumber) });
+
+        // changes the color for the very SAME socket that changed the color initially
+        // socket.emit("changeColor", data);
+
+        // changes the color for all the sockest BUT itself
+        // socket.broadcast.emit("changeColor", data);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("socket disconnected")
+    });
+
+});
 
 
 
@@ -54,7 +77,7 @@ mongoose.connect(process.env.DATABASE_URL, { useUnifiedTopology: true }, { useNe
     console.log("connected to DB");
 });
 
-app.listen(8080, (error) => {
+server.listen(8080, (error) => {
     if (error) {
         console.log(error);
     }

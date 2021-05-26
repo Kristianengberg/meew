@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js" integrity="sha512-cdV6j5t5o24hkSciVrb8Ki6FveC2SgwGfLE31+ZQRHAeSRxYhAQskLkq3dLm8ZcWe1N3vBOEYmmbhzf7NTtFFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src='index.js'></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
     <div id="navBar"></div>
-    <div id="leftdiv"></div>
+    <div id="leftdiv">
+        <h1>Recent Winners!:</h1>
+    </div>
 
     <div id="middlediv">
         <canvas id='canvas' width='440' height='440'>
@@ -24,7 +27,9 @@
         <button onClick="resetWheel();">Reset Wheel</button>
     </div>
 
-    <div id="rightdiv"></div>
+    <div id="rightdiv">
+        <h1>Your spinning history:</h1>
+    </div>
 
     <script>
         let theWheel = new Winwheel({
@@ -96,10 +101,16 @@
 
                     let stopAt = theWheel.getRandomForSegment(segmentNumber);
 
-
                     theWheel.animation.stopAngle = stopAt;
 
+
+
                     theWheel.startAnimation();
+
+                    socket.emit("userWin", {
+                        segmentNumber
+                    });
+
                 }
             }
         }
@@ -131,9 +142,15 @@
             ctx.stroke();
             ctx.fill();
         }
+
+        const socket = io();
+
+        socket.on("userWonData", (data) => {
+            console.log(data);
+            $("#leftdiv").append("<p>A user won: " + data.segmentNumber + "</p>");
+        });
     </script>
 
-    <div id="spinHistory"></div>
 
 </body>
 
