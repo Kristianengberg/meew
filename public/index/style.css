@@ -1,0 +1,22 @@
+#leftdiv {
+    float: left;
+    background: Red;
+    width: 30%;
+    height: 280px;
+}
+
+#middlediv {
+    float: left;
+    background: Green;
+    width: 40%;
+    height: 280px;
+}
+
+#rightdiv {
+    float: right;
+    background: rgb(235, 235, 255);
+    width: 30%;
+    height: 280px;
+}
+
+.spinHistoryDiv {}

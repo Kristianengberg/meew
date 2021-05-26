@@ -6,7 +6,10 @@ const userSchema = mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     hashedPassword: { type: String, required: true },
-    spinHistory: { type: String },
+    spinHistory: {
+        type: [Number]
+    },
+    credits: { type: Number, default: 500 },
     joinDate: { type: Date, default: Date.now }
 }, { collection: 'user' });
 

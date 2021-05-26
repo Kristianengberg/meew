@@ -12,9 +12,9 @@
 
 <body>
     <div id="navBar"></div>
+    <div id="leftdiv"></div>
 
-
-    <div style="text-align:center;">
+    <div id="middlediv">
         <canvas id='canvas' width='440' height='440'>
             Canvas not supported, use another browser.
          
@@ -24,7 +24,7 @@
         <button onClick="resetWheel();">Reset Wheel</button>
     </div>
 
-
+    <div id="rightdiv"></div>
 
     <script>
         let theWheel = new Winwheel({
@@ -133,7 +133,7 @@
         }
     </script>
 
-
+    <div id="spinHistory"></div>
 
 </body>
 

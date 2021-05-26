@@ -26,54 +26,27 @@ router.post("/users", async(req, res) => {
     }
 });
 
-
-router.get("/users/:id", async(req, res) => {
-        console.log(req.session.userID);
-        try {
-            const user = await User.findById(req.params.id);
-            res.json(user);
-        } catch (err) {
-            res.json({ message: err });
-        }
-    })
-    /*
-
-    router.patch("/users", async(req, res) => {
-        console.log("hello from patch");
-        try {
-
-            const updateUser = await User.updateOne({ _id: req.session.userID }, { $set: { firstName: req.body.firstName } });
-            res.json(updateUser);
-        } catch (err) {
-            res.json({ message: err });
-        }
-    });
-
-router.patch("/users/:id", async(req, res) => {
+router.get("/users/history", async(req, res) => {
     console.log(req.session.userID);
     try {
-        const updateUser = await User.updateOne({ _id: req.params.id }, { $set: { title: req.body.firstName } });
-        res.json(updateUser);
+        const user = await User.findOne({ _id: req.session.userID });
+        console.log(user.spinHistory);
+        res.json(user.spinHistory);
     } catch (err) {
         res.json({ message: err });
     }
 });
-*/
-router.delete("/users/:id", async(req, res) => {
+
+router.get("/users/data", async(req, res) => {
+    console.log(req.session.userID);
     try {
-        const removeUser = await User.remove({ _id: req.params.id });
-        res.json(removeUser);
+        const user = await User.findOne({ _id: req.session.userID });
+        console.log(user);
+        res.json(user);
     } catch (err) {
         res.json({ message: err });
     }
 });
-
-router.get("/testsession", (req, res) => {
-    console.log(req.session);
-    res.send("hello");
-})
-
-
 
 
 

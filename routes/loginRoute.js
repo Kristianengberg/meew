@@ -16,6 +16,7 @@ router.post("/login", async(req, res) => {
             if (cmp) {
 
                 req.session.userID = user.id;
+                req.session.username = user.firstName;
                 req.session.save(function(err) {
                     console.log("session user id ", req.session.userID);
                     if (!err) {
@@ -35,5 +36,12 @@ router.post("/login", async(req, res) => {
         res.status(500).send("Internal Server error Occured");
     }
 });
+
+router.get("/logout", (req, res) => {
+
+    req.session.destroy();
+    console.log("session destroyed. Logging out...")
+    res.redirect("/");
+})
 
 module.exports = router;
