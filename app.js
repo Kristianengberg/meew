@@ -18,68 +18,61 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 io.on("connection", (socket) => {
-    console.log("socket connected");
-    socket.on("userWin", (data) => {
-        console.log("received data ", data);
-        // changes the color for ALL the sockets in io
-        io.emit("userWonData", { segmentNumber: escapeHtml(data.segmentNumber) });
+  console.log("socket connected");
+  socket.on("userWin", (data) => {
+    console.log("received data ", data);
+    io.emit("userWonData", { segmentNumber: escapeHtml(data.segmentNumber) });
+  });
 
-        // changes the color for the very SAME socket that changed the color initially
-        // socket.emit("changeColor", data);
-
-        // changes the color for all the sockest BUT itself
-        // socket.broadcast.emit("changeColor", data);
-    });
-
-    socket.on("disconnect", () => {
-        console.log("socket disconnected")
-    });
-
+  socket.on("disconnect", () => {
+    console.log("socket disconnected");
+  });
 });
 
-
-
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 app.use(userRoute);
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(wheelRoute);
 
-
-
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/login/login.html");
+  res.sendFile(__dirname + "/public/login/login.html");
 });
 
 app.get("/index", (req, res) => {
-    res.sendFile(__dirname + "/public/index/index.html");
-})
-
-app.get("/register", (req, res) => {
-    res.sendFile(__dirname + "/public/register/register.html");
-})
-
-
-mongoose.connect(process.env.DATABASE_URL, { useUnifiedTopology: true }, { useNewUrlParser: true }, (error) => {
-    if (error) {
-        console.log(error);
-    }
-    console.log("connected to DB");
+  res.sendFile(__dirname + "/public/index/index.html");
 });
 
-server.listen(8080, (error) => {
+app.get("/register", (req, res) => {
+  res.sendFile(__dirname + "/public/register/register.html");
+});
+
+mongoose.connect(
+  process.env.DATABASE_URL,
+  { useUnifiedTopology: true },
+  { useNewUrlParser: true },
+  (error) => {
     if (error) {
-        console.log(error);
+      console.log(error);
     }
-    console.log("Server is running on port", 8080);
+    console.log("connected to DB");
+  }
+);
+
+server.listen(8080, (error) => {
+  if (error) {
+    console.log(error);
+  }
+  console.log("Server is running on port", 8080);
 });
