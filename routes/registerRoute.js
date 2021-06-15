@@ -22,7 +22,7 @@ router.post("/register", async(req, res) => {
             console.log("session user id ", req.session.userID);
             if (!err) {
 
-                res.redirect("/index");
+                res.redirect("/");
             }
         });
 
